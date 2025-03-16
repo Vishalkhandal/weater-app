@@ -1,0 +1,302 @@
+
+/* General Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background-color: #121212;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Header Styling */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1e1e1e;
+  padding: 15px 25px;
+  width: 90%;
+  max-width: 1200px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Search Bar */
+header div:first-child {
+  display: flex;
+  align-items: center;
+  background: #333;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+#input-city-name {
+  background: transparent;
+  border: none;
+  color: #fff;
+  outline: none;
+  font-size: 16px;
+  padding: 8px;
+  width: 300px;
+}
+
+#input-city-name::placeholder {
+  color: #bbb;
+}
+
+#btn-search {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* Temperature Unit Buttons */
+header div:nth-child(2) {
+  display: flex;
+  align-items: center;
+}
+
+.degree-celsius, .degree-fahrenheit {
+  background: #333;
+  border: none;
+  color: #fff;
+  padding: 8px 12px;
+  margin: 0 5px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* Light Theme (Default) */
+body.light-theme {
+  background-color: #ffffff;
+  color: #121212;
+}
+
+body.light-theme header {
+  background-color: #f5f5f5;
+  color: #121212;
+}
+
+body.light-theme .current-weather,
+body.light-theme .weather-highlights,
+body.light-theme .other-countries,
+body.light-theme .forecast {
+  background: #e3e3e3;
+  color: #121212;
+}
+
+/* Dark Theme */
+body.dark-theme {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+body.dark-theme {
+  background-color: #ffffff;
+}
+
+/* Toggle Container */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Hide Default Checkbox */
+#themeSwitch {
+  display: none;
+}
+
+/* Toggle Label */
+.toggle-label {
+  width: 60px;
+  height: 30px;
+  background-color: #111;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.3s ease-in-out;
+}
+
+/* Sun and Moon Icons */
+.toggle-label .fa-sun {
+  color: #f39c12;
+}
+
+.toggle-label .fa-moon {
+  color: #f1c40f;
+}
+
+/* Toggle Ball */
+.toggle-ball {
+  width: 24px;
+  height: 24px;
+  background-color: #fff;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  border-radius: 50%;
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Move Ball on Toggle */
+#themeSwitch:checked + .toggle-label .toggle-ball {
+  transform: translateX(30px);
+}
+
+/* --- MAIN CONTENT STYLING --- */
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+  max-width: 1200px;
+  margin-top: 20px;
+}
+
+/* Weather Main Section */
+.weather-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #1e1e1e;
+  padding: 20px;
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Current Weather */
+.current-weather {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+}
+
+.current-weather h3 {
+  font-size: 2.5rem;
+}
+
+
+.current-weather p {
+  font-size: 1.5rem;
+  color: #bbb;
+}
+
+.current-weather small {
+  font-size: 1.5rem;
+}
+
+#city-temp {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+#weather-icon {
+  width: 80px;
+  height: 80px;
+}
+
+/* Weather Highlights */
+.weather-highlights {
+  margin-top: 20px;
+  width: 100%;
+}
+
+.weather-highlights h3 {
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
+.highlights-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.highlight {
+  background: #333;
+  padding: 15px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.highlight p {
+  color: #bbb;
+}
+
+.highlight i {
+  color: #bbb;
+  font-size: 1.5rem;
+  padding: 10px;
+}
+
+.highlight h4 {
+  font-size: 1.3rem;
+}
+
+
+/* --- OTHER SECTIONS --- */
+/* Other Countries Section */
+/* .other-countries {
+  background: #1e1e1e;
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.other-countries h3 {
+  font-size: 22px;
+  margin-bottom: 15px;
+} */
+
+/* 10 Day Forecast */
+/* .forecast {
+  background: #1e1e1e;
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.forecast h3 {
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
+.forecast-grid {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.day {
+  background: #333;
+  padding: 15px;
+  border-radius: 12px;
+  text-align: center;
+  flex: 1;
+}
+
+.day img {
+  width: 50px;
+} */
