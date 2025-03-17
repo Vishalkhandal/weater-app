@@ -1,7 +1,6 @@
 const API_KEY = "f9de90ff056bd503d4777eedeefdad32";
 const inputCityName = document.querySelector("#input-city-name");
 const searchCityButton = document.querySelector("#btn-search");
-const btnToggle = document.querySelector("#btnToggle");
 const cityName = document.querySelector("#city-name");
 const currentDay = document.querySelector("#current-day");
 const currentDate = document.querySelector("#current-date");
@@ -16,76 +15,63 @@ const humidity = document.querySelector("#humidity");
 const seaLevel = document.querySelector("#sea-level");
 const visibility = document.querySelector("#visibility");
 
-console.log(cityName);
-console.log(cityTemp);
-
-async function getData(city) {
-    const BASE_URL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`;
-
+async function getData(url) {
     try {
-        const response = await fetch(BASE_URL);
+        const response = await fetch(url);
         if (!response.ok) {
-            throw new Error("City not found! Please try again.");
+            throw new Error("Location not found! Please try again.");
         }
         return await response.json();
-
     } catch (error) {
         alert(error.message);
     }
 }
 
-async function updateWeather() {
-    const value = inputCityName.value.trim();
-    if (!value) return alert("Please enter a city name!");
+async function updateWeatherByCity(city) {
+    const BASE_URL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`;
+    const result = await getData(BASE_URL);
+    if (result) displayWeather(result);
+}
 
-    const result = await getData(value);
-    console.log(result);
-    if (!result) return;
+async function updateWeatherByCoords(lat, lon) {
+    const BASE_URL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`;
+    const result = await getData(BASE_URL);
+    if (result) displayWeather(result);
+}
 
-    console.log(result.name);
-
+function displayWeather(result) {
     cityName.innerText = result.name;
-
     const now = new Date();
     currentDay.textContent = now.toLocaleString('en-US', { weekday: 'long' });
     currentDate.textContent = now.toLocaleDateString();
-
     weatherIcon.setAttribute("src", `https://openweathermap.org/img/w/${result.weather[0].icon}.png`);
     weatherIcon.setAttribute("alt", `${result.weather[0].description}`);
-
     cityTemp.textContent = `${result.main.temp}°C`;
     weatherDescription.textContent = result.weather[0].description;
     feelsLike.textContent = `Feels like: ${result.main.feels_like}°C`;
-
     windSpeed.textContent = `${result.wind.speed} km/h`;
-    humidity.textContent = `${result.main.humidity}`;
-    seaLevel.textContent = `${result.main.sea_level} m`;
-    visibility.textContent = result.visibility;
-
-    // Convert Unix timestamps to readable time
-    sunrise.textContent = `${new Date(result.sys.sunrise * 1000).toLocaleTimeString()}`;
-    sunset.textContent = `${new Date(result.sys.sunset * 1000).toLocaleTimeString()}`;
-
-
-
-
-    // Clear input field after search
-    inputCityName.value = "";
+    humidity.textContent = `${result.main.humidity}%`;
+    seaLevel.textContent = result.main.sea_level ? `${result.main.sea_level} m` : "N/A";
+    visibility.textContent = `${result.visibility / 1000} km`;
+    sunrise.textContent = new Date(result.sys.sunrise * 1000).toLocaleTimeString();
+    sunset.textContent = new Date(result.sys.sunset * 1000).toLocaleTimeString();
 }
 
-// Search button click event
-searchCityButton.addEventListener("click", updateWeather);
-// searchCityButton.addEventListener("click", getData);
-
-// Allow "Enter" key to search
-inputCityName.addEventListener("keypress", (event) => {
-    if (event.key === "Enter") {
-        updateWeather();
+function requestLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const { latitude, longitude } = position.coords;
+                updateWeatherByCoords(latitude, longitude);
+            },
+            (error) => {
+                alert("Location access denied. Please enter a city manually.");
+            }
+        );
+    } else {
+        alert("Geolocation is not supported by this browser.");
     }
-});
 
-
-document.addEventListener("DOMContentLoaded", function () {
     const themeSwitch = document.getElementById("themeSwitch");
     const body = document.body;
 
@@ -105,4 +91,23 @@ document.addEventListener("DOMContentLoaded", function () {
             localStorage.setItem("theme", "light");
         }
     });
+}
+
+// Fetch weather based on user input
+searchCityButton.addEventListener("click", () => {
+    const city = inputCityName.value.trim();
+    if (city) updateWeatherByCity(city);
+    else alert("Please enter a city name!");
 });
+
+inputCityName.addEventListener("keypress", (event) => {
+    if (event.key === "Enter") {
+        const city = inputCityName.value.trim();
+        if (city) updateWeatherByCity(city);
+        else alert("Please enter a city name!");
+    }
+});
+
+// Request location on page load
+document.addEventListener("DOMContentLoaded", requestLocation);
+
