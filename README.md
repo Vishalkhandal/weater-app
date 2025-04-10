@@ -1,1 +1,3 @@
-# weater-app
+# weather-app
+
+## weather app for learning purpose
